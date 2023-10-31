@@ -1,46 +1,53 @@
-import { useEffect } from "react";
-
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { PlainTextPlugin } from "@lexical/react/LexicalPlainTextPlugin";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import LexicalErrorBoundary from "@lexical/react/LexicalErrorBoundary";
-
-const theme = {};
-
-function MyCustomAutoFocusPlugin() {
-  const [editor] = useLexicalComposerContext();
-
-  useEffect(() => {
-    editor.focus();
-  }, [editor]);
-
-  return null;
-}
-
-function onError(error: unknown) {
-  console.error(error);
-}
+import defaultTheme from "../theme/default";
+import { HeadingNode, QuoteNode } from "@lexical/rich-text";
+import { ListItemNode, ListNode } from "@lexical/list";
+import { CodeHighlightNode, CodeNode } from "@lexical/code";
+import { TableCellNode, TableNode, TableRowNode } from "@lexical/table";
+import { AutoLinkNode, LinkNode } from "@lexical/link";
 
 function Editor() {
   const initialConfig = {
-    namespace: "MyEditor",
-    theme,
-    onError,
+    namespace: "playground",
+    theme: defaultTheme,
+    // Handling of errors during update
+    onError(error: unknown) {
+      throw error;
+    },
+    nodes: [
+      HeadingNode,
+      ListNode,
+      ListItemNode,
+      QuoteNode,
+      CodeNode,
+      CodeHighlightNode,
+      TableNode,
+      TableCellNode,
+      TableRowNode,
+      AutoLinkNode,
+      LinkNode,
+    ],
   };
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
-      <PlainTextPlugin
-        contentEditable={<ContentEditable />}
-        placeholder={<div>Enter some text...</div>}
-        ErrorBoundary={LexicalErrorBoundary}
-      />
-      <HistoryPlugin />
-      <MyCustomAutoFocusPlugin />
+      <div className="editor-container">
+        <PlainTextPlugin
+          contentEditable={<ContentEditable className="editor-input" />}
+          placeholder={<Placeholder />}
+          ErrorBoundary={LexicalErrorBoundary}
+        />
+        <HistoryPlugin />
+      </div>
     </LexicalComposer>
   );
 }
 
+function Placeholder() {
+  return <div className="editor-placeholder">Enter some plain text...</div>;
+}
 export default Editor;
