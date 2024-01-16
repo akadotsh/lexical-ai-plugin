@@ -2,89 +2,98 @@ import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext
 import {
   LexicalCommand,
   createCommand,
-  COPY_COMMAND,
-  COMMAND_PRIORITY_NORMAL,
   $getTextContent,
   $getSelection,
 } from "lexical";
-import { Fragment, useCallback, useEffect, useState } from "react";
-
+import { useCallback, useState } from "react";
+import Icon from "../assets/Luc.svg";
+import { handleAIRequest } from "./util";
 export const COPY: LexicalCommand<string> = createCommand();
 export const PASTE: LexicalCommand<string> = createCommand();
-export function AIPlugin() {
+
+type Props = {
+  apiKey: string;
+};
+
+export default function AIPlugin({ apiKey }: Props) {
   const [editor] = useLexicalComposerContext();
   const [showOptions, setShowOptions] = useState(false);
-  const [selectedContent, setSelectedcontent] = useState("");
+  const [selectedText, setSelectedText] = useState("");
 
   const ai = useCallback(() => {
     editor.update(() => {
-      const selection = $getSelection();
-      console.log("SELECTION", selection);
       const textContent = $getTextContent();
-      console.log("TEXT CONTENT", textContent);
-      setSelectedcontent(textContent);
+      setSelectedText(textContent);
     });
   }, [editor]);
 
-  const handleAIResponse = useCallback((options: Array<string>) => {
-    console.log("options", options);
-  }, []);
-
-  //   useEffect(() => {
-  //     return editor.registerCommand();
-  //   }, [editor]);
+  const handleAIResponse = useCallback(
+    (options: Array<string>) => {
+      //TODO handleAIRequest(apiKey, selectedText, options);
+      editor.update(() => {
+        const selection = $getSelection();
+        if (selection) {
+          selection.insertText("the text I wanted to insert");
+        }
+      });
+    },
+    [editor]
+  );
 
   const handleDropdown = () => {
     setShowOptions((prevState) => !prevState);
   };
 
   return (
-    <Fragment>
+    <div>
       <button
         onClick={() => {
           ai();
           setShowOptions((prevState) => !prevState);
-          //   handleDropdown();
         }}
       >
-        AI
+        <img src={Icon} />
       </button>
       {showOptions ? (
         <div>
-          <li
+          <option
+            style={{ cursor: "pointer" }}
             onClick={() => {
               handleAIResponse(["shorten"]);
               handleDropdown();
             }}
           >
             shorten
-          </li>
-          <li
+          </option>
+          <option
+            style={{ cursor: "pointer" }}
             onClick={() => {
               handleAIResponse(["summarize"]);
               handleDropdown();
             }}
           >
             Summarize
-          </li>
-          <li
+          </option>
+          <option
+            style={{ cursor: "pointer" }}
             onClick={() => {
               handleAIResponse(["simplify"]);
               handleDropdown();
             }}
           >
             Simplify
-          </li>
-          <li
+          </option>
+          <option
+            style={{ cursor: "pointer" }}
             onClick={() => {
               handleAIResponse(["splelling", "grammar"]);
               handleDropdown();
             }}
           >
             Splelling & Grammar
-          </li>
+          </option>
         </div>
       ) : null}
-    </Fragment>
+    </div>
   );
 }

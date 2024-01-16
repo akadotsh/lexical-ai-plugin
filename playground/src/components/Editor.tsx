@@ -14,7 +14,7 @@ import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
 import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import { MarkdownShortcutPlugin } from "@lexical/react/LexicalMarkdownShortcutPlugin";
 import { TRANSFORMERS } from "@lexical/markdown";
-import AIPlugin from "../AiPlugin";
+import AIPlugin from "../Plugin/AI";
 
 function Editor() {
   const initialConfig = {
@@ -41,8 +41,8 @@ function Editor() {
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
+      <AIPlugin apiKey="" />
       <div className="editor-container">
-        <AIPlugin />
         <div className="editor-inner">
           <RichTextPlugin
             contentEditable={<ContentEditable className="editor-input" />}
