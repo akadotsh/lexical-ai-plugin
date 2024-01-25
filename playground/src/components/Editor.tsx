@@ -14,9 +14,13 @@ import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
 import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import { MarkdownShortcutPlugin } from "@lexical/react/LexicalMarkdownShortcutPlugin";
 import { TRANSFORMERS } from "@lexical/markdown";
-import AIPlugin from "../Plugin/AI";
+import AIPlugin from "lexical-ai-plugin";
+import { useRef } from "react";
+const API_KEY: string = import.meta.env.VITE_OPENAI_KEY;
 
 function Editor() {
+  const toolbarRef = useRef<HTMLDivElement>(null);
+
   const initialConfig = {
     namespace: "playground",
     theme: defaultTheme,
@@ -41,8 +45,11 @@ function Editor() {
 
   return (
     <LexicalComposer initialConfig={initialConfig}>
-      <AIPlugin apiKey="" />
       <div className="editor-container">
+        <div className="toolbar" ref={toolbarRef}>
+          <AIPlugin apiKey={API_KEY} parentRef={toolbarRef} />
+          <div className="divider" />{" "}
+        </div>
         <div className="editor-inner">
           <RichTextPlugin
             contentEditable={<ContentEditable className="editor-input" />}
