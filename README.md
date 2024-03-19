@@ -1,7 +1,7 @@
 ## Installation
 
 ```bash
-npm install lexical-ai-plugin
+npm install lexical-ai-assistant
 ```
 
 ## Demo
