@@ -26,7 +26,7 @@ export default function AIPlugin({ apiKey, parentRef }: Props) {
     let text = "";
     editor.update(() => {
       const textContent = $getTextContent();
-      return textContent;
+      text = textContent;
     });
     return text;
   }, [editor]);

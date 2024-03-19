@@ -14,7 +14,7 @@ import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
 import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import { MarkdownShortcutPlugin } from "@lexical/react/LexicalMarkdownShortcutPlugin";
 import { TRANSFORMERS } from "@lexical/markdown";
-import AIPlugin from "lexical-ai-assitant";
+import AIPlugin from "lexical-ai-assistant";
 import { useRef } from "react";
 const API_KEY: string = import.meta.env.VITE_OPENAI_KEY;
 

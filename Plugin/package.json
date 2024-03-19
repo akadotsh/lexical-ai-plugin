@@ -1,5 +1,5 @@
 {
-  "name": "lexical-ai-assitant",
+  "name": "lexical-ai-assistant",
   "version": "0.0.1-alpha",
   "description": "",
   "main": "dist/index.js",
@@ -13,8 +13,7 @@
     "url": "https://github.com/akadotsh/lexical-ai"
   },
   "scripts": {
-    "build": "tsup",
-    "publish": "npm run build && npm publish"
+    "build": "tsup"
   },
   "author": "0xakash9",
   "license": "ISC",
