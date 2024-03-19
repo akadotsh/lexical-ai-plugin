@@ -18,7 +18,7 @@
     "@lexical/table": "^0.12.2",
     "axios": "^1.6.7",
     "lexical": "^0.12.2",
-    "lexical-ai-plugin": "^0.0.1",
+    "lexical-ai-assitant": "0.0.1-alpha",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

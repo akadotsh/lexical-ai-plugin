@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import {
   LexicalCommand,
@@ -6,9 +6,8 @@ import {
   $getTextContent,
   $getSelection,
 } from "lexical";
-import { useCallback, useState } from "react";
 import { handleAIRequest } from "./util";
-import DropDown from "./DropDown";
+import Dropdown from "./dropdown";
 import "./index.css";
 
 export const COPY: LexicalCommand<string> = createCommand();
@@ -22,26 +21,20 @@ type Props = {
 export default function AIPlugin({ apiKey, parentRef }: Props) {
   const [editor] = useLexicalComposerContext();
   const [showOptions, setShowOptions] = useState(false);
-  const [selectedText, setSelectedText] = useState("");
-  const [isLoadingResponse, setIsLoadingResponse] = useState(false);
 
   const getTextContent = useCallback(() => {
+    let text = "";
     editor.update(() => {
-      const selection = window.getSelection();
       const textContent = $getTextContent();
-      setSelectedText(textContent);
+      return textContent;
     });
+    return text;
   }, [editor]);
 
   const handleAIAssistant = useCallback(
     async (options: Array<string>) => {
-      setIsLoadingResponse(true);
-      const assitantResponse = await handleAIRequest(
-        apiKey,
-        selectedText,
-        options
-      );
-      setIsLoadingResponse(false);
+      const text = getTextContent();
+      const assitantResponse = await handleAIRequest(apiKey, text, options);
       editor.update(() => {
         const selection = $getSelection();
         if (selection && assitantResponse) {
@@ -57,7 +50,6 @@ export default function AIPlugin({ apiKey, parentRef }: Props) {
   };
 
   const openDropDown = () => {
-    getTextContent();
     toggleDropDown();
   };
 
@@ -65,25 +57,22 @@ export default function AIPlugin({ apiKey, parentRef }: Props) {
     setShowOptions(false);
   };
 
-  const onDropDownClick = (options: Array<string>) => {
+  const handleDropDown = (options: Array<string>) => {
     handleAIAssistant(options);
-    setShowOptions(false);
+    toggleDropDown();
   };
 
   return (
     <div>
-      <button
-        style={{ outline: "none", background: "transparent", border: "none" }}
-        onClick={openDropDown}
-      >
+      <button className="button" onClick={openDropDown}>
         <span>AI</span>
       </button>
       {showOptions && (
-        <DropDown
+        <Dropdown
           parentRef={parentRef}
           closeDropDown={closeDropDown}
           setShowOptions={setShowOptions}
-          onDropDownClick={onDropDownClick}
+          onDropDownClick={handleDropDown}
         />
       )}
     </div>

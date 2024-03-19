@@ -1,13 +1,13 @@
 import React, { Dispatch, SetStateAction, useEffect, useRef } from "react";
 import { options } from "./util";
-type Props = {
+interface Props {
   parentRef: React.RefObject<HTMLDivElement>;
   closeDropDown: () => void;
   setShowOptions: Dispatch<SetStateAction<boolean>>;
   onDropDownClick: (options: Array<string>) => void;
-};
+}
 
-function DropDown(props: Props) {
+export default function Dropdown(props: Props) {
   const { parentRef, closeDropDown, onDropDownClick } = props;
   const dropDownRef = useRef<HTMLDivElement>(null);
 
@@ -49,5 +49,3 @@ function DropDown(props: Props) {
     </div>
   );
 }
-
-export default DropDown;

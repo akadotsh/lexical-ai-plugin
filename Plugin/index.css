@@ -46,3 +46,11 @@
   flex-grow: 1;
   width: 200px;
 }
+
+.button {
+  padding: 2px 4px;
+  cursor: pointer;
+  outline: none;
+  background: transparent;
+  border: none;
+}

@@ -1,6 +1,6 @@
 {
-  "name": "lexical-ai-plugin",
-  "version": "0.0.2",
+  "name": "lexical-ai-assitant",
+  "version": "0.0.1-alpha",
   "description": "",
   "main": "dist/index.js",
   "keywords": [
@@ -10,24 +10,25 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/0xakash9/lexical-ai"
+    "url": "https://github.com/akadotsh/lexical-ai"
   },
   "scripts": {
-    "build": "tsup"
+    "build": "tsup",
+    "publish": "npm run build && npm publish"
   },
   "author": "0xakash9",
   "license": "ISC",
-  "dependencies": {
-    "@lexical/react": "^0.13.1",
-    "axios": "^1.6.7",
-    "lexical": "^0.13.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
-  },
   "devDependencies": {
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
     "tsup": "^8.0.1",
     "typescript": "^5.3.3"
+  },
+  "peerDependencies": {
+    "@lexical/react": ">=0.12.2",
+    "axios": "^1.6.7",
+    "lexical": ">=0.12.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   }
 }
