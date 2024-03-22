@@ -1,7 +1,7 @@
 import { defineConfig } from "tsup";
 
 export default defineConfig({
-  entry: ["./index.tsx"],
+  entry: ["./src/index.tsx"],
   treeshake: true,
   sourcemap: "inline",
   minify: true,

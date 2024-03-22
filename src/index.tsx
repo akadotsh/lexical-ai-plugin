@@ -14,11 +14,11 @@ export const COPY: LexicalCommand<string> = createCommand();
 export const PASTE: LexicalCommand<string> = createCommand();
 
 type Props = {
-  apiKey: string;
+  workerUrl: string;
   parentRef: React.RefObject<HTMLDivElement>;
 };
 
-export default function AIPlugin({ apiKey, parentRef }: Props) {
+export default function AIPlugin({ workerUrl, parentRef }: Props) {
   const [editor] = useLexicalComposerContext();
   const [showOptions, setShowOptions] = useState(false);
 
@@ -34,7 +34,7 @@ export default function AIPlugin({ apiKey, parentRef }: Props) {
   const handleAIAssistant = useCallback(
     async (options: Array<string>) => {
       const text = getTextContent();
-      const assitantResponse = await handleAIRequest(apiKey, text, options);
+      const assitantResponse = await handleAIRequest(workerUrl, text, options);
       editor.update(() => {
         const selection = $getSelection();
         if (selection && assitantResponse) {
