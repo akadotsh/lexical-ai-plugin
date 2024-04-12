@@ -4,7 +4,7 @@ This plugin is built to be used with Cloudflare Workers. In order to use this pl
 ## Installation
 
 ```bash
-npm install lexical-ai-assistant
+npm install lexical-ai-plugin
 ```
 
 Example

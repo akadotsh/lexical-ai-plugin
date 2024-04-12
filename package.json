@@ -1,6 +1,6 @@
 {
-  "name": "lexical-ai-assistant",
-  "version": "0.0.1-alpha",
+  "name": "lexical-ai-plugin",
+  "version": "0.0.2-alpha",
   "description": "",
   "main": "dist/index.js",
   "keywords": [
@@ -15,7 +15,7 @@
   "scripts": {
     "build": "tsup"
   },
-  "author": "0xakash9",
+  "author": "akadotsh",
   "license": "ISC",
   "devDependencies": {
     "@types/react": "^18.2.55",
