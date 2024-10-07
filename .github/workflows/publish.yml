@@ -1,4 +1,3 @@
-
 name: publish
 
 on:
@@ -6,20 +5,54 @@ on:
     branches:
       - main
 
-
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v3
         with:
           node-version: 18
+          registry-url: "https://registry.npmjs.org"
       - run: npm install
-      - run: npm run-script build
+      - run: npm run build
 
-      - id: publish
-        uses: JS-DevTools/npm-publish@v1
-        with:
-          token: ${{ secrets.lexical_plugin_token }}
-          access: "public"
+      - name: Check if Dependabot
+        id: is-dependabot
+        run: |
+          if [[ ${{ github.actor }} == "dependabot[bot]" ]]; then
+            echo "is_dependabot=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_dependabot=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Configure Git
+        if: steps.is-dependabot.outputs.is_dependabot == 'false'
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+
+      - name: Bump pre-release version
+        if: steps.is-dependabot.outputs.is_dependabot == 'false'
+        run: |
+          npm version prerelease --preid=alpha -m "Bump version to %s [skip ci]"
+          git push --follow-tags
+
+      - name: Publish to NPM
+        if: steps.is-dependabot.outputs.is_dependabot == 'false'
+        run: npm publish --tag alpha --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.lexical_plugin_token }}
+
+      - name: Log publish result
+        if: steps.is-dependabot.outputs.is_dependabot == 'false'
+        run: |
+          echo "New version: $(npm pkg get version)"
+          echo "Published to NPM with 'alpha' tag"
+
+      - name: Log skipped publish
+        if: steps.is-dependabot.outputs.is_dependabot == 'true'
+        run: |
+          echo "Skipped version bump and publish for Dependabot PR"
